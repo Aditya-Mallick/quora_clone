@@ -3,9 +3,13 @@
 <div class="feed-container">
   <div class="sidebar-container">
     <div class="sidebar-tile sidebar-heading">People</div>
-    <div class="sidebar-tile sidebar-title">
-      <a href=""> Questions for You</a>
+    {% for followee in followees %}
+    <div class="sidebar-tile followee-tile sidebar-title">
+      <a href="{% url 'profile' followee.user.id %}" style="background: none"
+        >{{followee.user.username}}</a
+      >
     </div>
+    {% endfor %}
   </div>
   <div class="feed">
     <div class="questions">

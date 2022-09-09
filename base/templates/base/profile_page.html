@@ -6,6 +6,11 @@
     <div class="profile-head-content">
       <div class="profile-name">
         <h1>{{user.username | capfirst}}</h1>
+        {% if request.user == user %}
+        <a href="{% url 'edit' %}">
+          <button class="edit-btn">Edit</button>
+        </a>
+        {% endif %}
       </div>
       Interior Designer . Joined {{user.date_joined | date}}
       <!--  -->

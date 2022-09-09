@@ -182,6 +182,25 @@ def followPosts(request):
         mess = sorted(chain(mess, b),
                       key=lambda post: post.created_at, reverse=True)
 
-    context = {'mess': mess}
+    context = {'mess': mess, 'followees': followees}
     print(mess)
     return render(request, 'base/followers_post.html', context)
+
+
+def editProfile(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        cred = request.POST.get('credential')
+        avatar = request.POST.get('avatar')
+        bio = request.POST.get('bio')
+        user = request.user
+        user.name = name
+        user.email = email
+        user.credential = cred
+        user.avatar = avatar
+        user.bio = bio
+        user.save()
+        return redirect('profile', request.user.id)
+
+    return render(request, 'base/edit.html')

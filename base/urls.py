@@ -13,6 +13,7 @@ urlpatterns = [
     path('follow/<str:pk>/', follow, name='follow'),
     path('unfollow/<str:pk>/', unfollow, name='unfollow'),
     path('following/', followPosts, name='following'),
+    path('edit/', editProfile, name='edit'),
 
     path('login/', loginPage, name="login"),
     path('logout/', logoutPage, name='logout'),
