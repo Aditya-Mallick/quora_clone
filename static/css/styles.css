@@ -470,6 +470,7 @@ a{
     font-weight: 400;
 }
 
+
 .submit-div{
     display: flex;
     justify-content: center;
@@ -652,4 +653,33 @@ a{
 .edit-container{
     width: 50%;
     background-color: white;
+}
+
+
+
+.form-group a{
+    color: rgb(73, 73, 255);
+}
+
+.edit-form-group{
+    margin: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 70%;
+    margin: auto;
+    flex-wrap: wrap;
+    padding: 10px;
+    margin: 10px;   
+}
+
+.edit-title{
+    margin-top: 20px;
+}
+
+.edit-form-group input[type="text"]{
+    border: 2px solid black;
+    outline: none;
+    /* background-color: rgb(210, 210, 210); */
+    padding: 10px;
 }

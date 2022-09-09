@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from .models import FollowUser, Notification, User, Question, Answer, Post
+from .forms import UserForm
 from itertools import chain
 
 
@@ -15,7 +16,7 @@ def home(request):
                                       Q(body__icontains=q))
 
     mess = sorted(chain(answers, posts),
-                  key=lambda post: post.created_at, reverse=True)[:10]
+                  key=lambda post: post.created_at, reverse=True)
 
     context = {'mess': mess}
     return render(request, 'base/home.html', context)
@@ -67,7 +68,7 @@ def registerPage(request):
         password2 = request.POST.get('password2')
         user = User.objects.filter(username=username)
         if user or password1 != password2:
-            return redirect('registration')
+            return redirect('register')
         user = User.objects.create(username=username, email=email)
         user.set_password(password1)
         user.save()
@@ -95,7 +96,8 @@ def ask(request):
 
 def notifications(request):
     if request.user.is_authenticated:
-        notifs = Notification.objects.filter(user=request.user)
+        notifs = Notification.objects.filter(
+            user=request.user).order_by('-created_at')
         context = {'notifs': notifs}
         return render(request, 'base/notifications.html', context)
     else:
@@ -188,19 +190,12 @@ def followPosts(request):
 
 
 def editProfile(request):
+    form = UserForm(instance=request.user)
     if request.method == "POST":
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        cred = request.POST.get('credential')
-        avatar = request.POST.get('avatar')
-        bio = request.POST.get('bio')
-        user = request.user
-        user.name = name
-        user.email = email
-        user.credential = cred
-        user.avatar = avatar
-        user.bio = bio
-        user.save()
-        return redirect('profile', request.user.id)
+        form = UserForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile', request.user.id)
 
-    return render(request, 'base/edit.html')
+    context = {'form': form}
+    return render(request, 'base/edit.html', context)

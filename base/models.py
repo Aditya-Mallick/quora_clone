@@ -6,7 +6,8 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     name = models.CharField(max_length=200)
     bio = models.CharField(max_length=300, blank=True, null=True, default="")
-    avatar = models.ImageField(default='avatar.svg')
+    avatar = models.ImageField(
+        default='avatar.svg', upload_to='images/', null=True, blank=True)
     credential = models.CharField(max_length=50, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now=True)
@@ -55,6 +56,8 @@ class Post(models.Model):
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     ques = models.ForeignKey(Question, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.ques.body

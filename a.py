@@ -1,49 +1,28 @@
-from collections import defaultdict, deque
+def solve(arr=[10, -7, -10, 33]):
+    for i in range(len(arr)):
+        arr[i] = abs(arr[i])
 
+    arr.sort()
+    print(arr)
 
-class Solution:
-    def findOrder(self, n: int, prereq):
-        adj = defaultdict(set)
-        for cou, pre in prereq:
-            adj[cou].add(pre)
-
-        visit = set()
-        done = set()
-        q = deque()
-        ans = []
-
-        for i in range(n):
-            if i not in adj:
-                done.add(i)
-                ans.append(i)
-
-        def dfs(i, cur):
-            visit.add(i)
-            for nei in adj[i]:
-                if nei in visit:
-                    return False, []
-                if nei in done:
-                    continue
-                a, b = dfs(nei, cur)
-                if not a:
-                    return False, []
-            visit.remove(i)
-            cur.append(i)
-            done.add(i)
-            return True, cur
-
-        for i in range(n):
-            if i in done:
-                continue
-            a, b = dfs(i, [])
-            if not a:
-                return []
-            for j in b:
-                ans.append(j)
-                done.add(j)
-
+    def binarySearch(x, j):
+        ans = j
+        l, r = 0, j
+        while l <= r:
+            m = (l+r)//2
+            if arr[m] < x:
+                l = m + 1
+            else:
+                ans = m
+                r = m - 1
         return ans
 
+    ans = 0
+    for i in range(len(arr)):
+        a = binarySearch(arr[i]//2, i)
+        print(a)
+        ans += (i - a)
+    return ans
 
-obj = Solution()
-print(obj.findOrder(2, [[0, 1]]))
+
+print(solve())

@@ -12,7 +12,7 @@
         </a>
         {% endif %}
       </div>
-      Interior Designer . Joined {{user.date_joined | date}}
+      {{user.credential}} . Joined {{user.date_joined | date}}
       <!--  -->
       {% if user != request.user %} . {% if isFollowing %}
       <a href="{% url 'unfollow' user.id %}" style="color: blue"> Unfollow</a>
@@ -23,12 +23,7 @@
       {{followers.count}} followers . {{following.count}} following
     </div>
   </div>
-  <div class="profile-bio">
-    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit doloremque
-    placeat ipsam magnam harum, sapiente est voluptatem vitae hic voluptate,
-    reprehenderit molestias possimus cumque, animi ab illo. Consequatur,
-    repellendus perspiciatis.
-  </div>
+  <div class="profile-bio">{{user.bio}}</div>
 
   <hr />
   <div class="your-posts">Your Posts</div>
