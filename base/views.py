@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from .models import FollowUser, Notification, User, Question, Answer, Post
+from django.contrib.auth.decorators import login_required
 from .forms import UserForm
 from itertools import chain
 
@@ -20,6 +21,9 @@ def home(request):
 
     context = {'mess': mess}
     return render(request, 'base/home.html', context)
+
+
+login_required(login_url='login')
 
 
 def answer(request, pk):
@@ -78,6 +82,9 @@ def registerPage(request):
     return render(request, 'base/register_page.html')
 
 
+login_required(login_url='login')
+
+
 def ask(request):
     if request.method == 'POST':
         user = request.user
@@ -94,6 +101,9 @@ def ask(request):
     return render(request, 'base/ask.html')
 
 
+login_required(login_url='login')
+
+
 def notifications(request):
     if request.user.is_authenticated:
         notifs = Notification.objects.filter(
@@ -102,6 +112,9 @@ def notifications(request):
         return render(request, 'base/notifications.html', context)
     else:
         return redirect('login')
+
+
+login_required(login_url='login')
 
 
 def post(request):
@@ -117,6 +130,9 @@ def post(request):
         return redirect('home')
 
     return render(request, 'base/post.html')
+
+
+login_required(login_url='login')
 
 
 def profile(request, pk):
@@ -136,6 +152,9 @@ def profile(request, pk):
     return render(request, 'base/profile_page.html', context)
 
 
+login_required(login_url='login')
+
+
 def follow(request, pk):
     follower = request.user
     followee = User.objects.get(id=pk)
@@ -148,6 +167,9 @@ def follow(request, pk):
     return redirect(request.META['HTTP_REFERER'])
 
 
+login_required(login_url='login')
+
+
 def unfollow(request, pk):
     follower = request.user
     followee = User.objects.get(id=pk)
@@ -155,6 +177,9 @@ def unfollow(request, pk):
     if a:
         a.delete()
     return redirect(request.META['HTTP_REFERER'])
+
+
+login_required(login_url='login')
 
 
 def followPosts(request):
@@ -187,6 +212,9 @@ def followPosts(request):
     context = {'mess': mess, 'followees': followees}
     print(mess)
     return render(request, 'base/followers_post.html', context)
+
+
+login_required(login_url='login')
 
 
 def editProfile(request):
